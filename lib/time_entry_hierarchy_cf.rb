@@ -46,17 +46,16 @@ module TimeEntryHierarchyCf
     def custom_field_class_for(type, field_name)
       "#{type}_custom_field".camelize.constantize
     end
+  end
 
-    module Naming
-      def self.internal_name_for(type, field_name)
-        "#{type}_#{field_name}"
-      end
-
-      def self.time_entry_internal_name_for(type, field_name)
-        "time_entry_#{field_name}_from_#{type}"
-      end
+  module Naming
+    def self.internal_name_for(type, field_name)
+      "#{type}_#{field_name}"
     end
 
+    def self.time_entry_internal_name_for(type, field_name)
+      "time_entry_#{field_name}_from_#{type}"
+    end
   end
 
 end

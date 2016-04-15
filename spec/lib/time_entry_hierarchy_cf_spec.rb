@@ -2,6 +2,9 @@ require File.expand_path("../../spec_helper", __FILE__)
 
 RSpec.describe TimeEntryHierarchyCf do
 
+  let!(:dummy_config_path) { File.expand_path("../../fixtures/spec_config.yml", __FILE__) }
+  let!(:dummy_yaml)   { YAML::load(File.open(dummy_config_path).read) }
+
   specify "module constants" do
     expect(described_class::ALLOWED_FIRST_LEVEL_KEYS).to eq(%w(project issue))
     expect(described_class::CONFIG_FILE_PATH).to eq("#{Rails.root}/config/time_entry_hierarchy_cf.yml")
@@ -11,12 +14,8 @@ RSpec.describe TimeEntryHierarchyCf do
     expect(described_class).to respond_to(:yaml_config)
   end
 
-  context ".config_from_yaml" do
-
+  describe ".config_from_yaml" do
     context "loads file from CONFIG_FILE_PATH path" do
-      let!(:dummy_config_path) { File.expand_path("../../fixtures/spec_config.yml", __FILE__) }
-      let!(:dummy_yaml)   { YAML::load(File.open(dummy_config_path).read) }
-
       context "assigns it to @@yaml_config" do
         before do
           expect(File).to receive(:exists?).with(described_class::CONFIG_FILE_PATH).and_return(true)
@@ -49,56 +48,58 @@ RSpec.describe TimeEntryHierarchyCf do
 
   end
 
+  describe ".config_valid?" do
+    context "with valid config" do
+      before do
+        allow(described_class).to receive(:yaml_config).and_return(dummy_yaml)
+      end
+      specify { expect(described_class.config_valid?).to be(true)}
+    end
+
+    context "with invalid config" do
+      before do
+        allow(described_class).to receive(:yaml_config).and_return({'some' => 'key'})
+      end
+      specify do
+        expect { described_class.config_valid? }.to raise_error(ArgumentError, "Invalid first-level keys in config: [\"some\"]")
+      end
+    end
+  end
+
+  describe ".create_custom_field!" do
+    before do
+      allow(described_class).to receive(:yaml_config).and_return(dummy_yaml)
+      described_class.create_custom_field!('project', 'first_field')
+    end
+
+    specify 'creates a ProjectCustomField' do
+      expect(ProjectCustomField.find_by_internal_name(described_class::Naming.internal_name_for('project', 'first_field'))).not_to be(nil)
+    end
+
+    specify 'creates a TimeEntryCustomField' do
+      expect(TimeEntryCustomField.find_by_internal_name(described_class::Naming.time_entry_internal_name_for('project', 'first_field'))).not_to be(nil)
+    end
+
+    after do
+      ProjectCustomField.delete_all
+      TimeEntryCustomField.delete_all
+    end
+  end
+
+  describe ".custom_field_attributes_for" do
+    before { allow(described_class).to receive(:yaml_config).and_return(dummy_yaml) }
+
+    specify 'for Project field' do
+      expect(described_class.custom_field_attributes_for('project', 'first_field')[:field_format]).to eq('string')
+      expect(described_class.custom_field_attributes_for('project', 'first_field')[:is_required]).to eq(true)
+      expect(described_class.custom_field_attributes_for('project', 'first_field')[:internal_name]).to eq('project_first_field')
+    end
+
+    specify 'for TimeEntry field' do
+      expect(described_class.custom_field_attributes_for('project', 'first_field', for_time_entry: true)[:field_format]).to eq('string')
+      expect(described_class.custom_field_attributes_for('project', 'first_field', for_time_entry: true)[:is_required]).to eq(true)
+      expect(described_class.custom_field_attributes_for('project', 'first_field', for_time_entry: true)[:internal_name]).to eq('time_entry_first_field_from_project')
+    end
+  end
+
 end
-
-# module TimeEntryHierarchyCf
-#
-#
-#   class << self
-
-#     end
-#
-#     def config_valid?
-#       # checking for first level keys
-#       if (config_from_yaml.keys - ALLOWED_FIRST_LEVEL_KEYS).any?
-#         raise ArgumentError, "Invalid first-level keys in config: #{(config_from_yaml.keys - ALLOWED_FIRST_LEVEL_KEYS).inspect}"
-#       end
-#
-#       return true
-#     end
-#
-#     def create_custom_field!(type, field_name)
-#       entry = custom_field_class_for(type, field_name).create(custom_field_attributes_for(type, field_name))
-#
-#       if entry.persisted?
-#         TimeEntryCustomField.create(custom_field_attributes_for(type, field_name, for_time_entry: true))
-#       end
-#
-#       return entry
-#     end
-#
-#     def custom_field_attributes_for(type, field_name, options = {for_time_entry: false})
-#       full_field_name = Naming.send((options[:for_time_entry] ? :time_entry_internal_name_for : :internal_name_for), type, field_name)
-#
-#       config_from_yaml[type]['fields'][field_name].symbolize_keys.merge({
-#         name: "#{full_field_name.first(25)} #{ rand(1000)}", internal_name: full_field_name
-#       })
-#     end
-#
-#     def custom_field_class_for(type, field_name)
-#       "#{type}_custom_field".camelize.constantize
-#     end
-#
-#     module Naming
-#       def self.internal_name_for(type, field_name)
-#         "#{type}_#{field_name}"
-#       end
-#
-#       def self.time_entry_internal_name_for(type, field_name)
-#         "time_entry_#{field_name}_from_#{type}"
-#       end
-#     end
-#
-#   end
-#
-# end

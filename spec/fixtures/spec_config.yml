@@ -1,9 +1,11 @@
 project:
-  field:
+  fields:
     first_field:
       field_format: string
+      is_required: true
 
 issue:
-  field:
+  fields:
     second_field:
       field_format: string
+      hidden: true
