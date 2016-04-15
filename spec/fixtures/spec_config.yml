@@ -1,0 +1,9 @@
+project:
+  field:
+    first_field:
+      field_format: string
+
+issue:
+  field:
+    second_field:
+      field_format: string

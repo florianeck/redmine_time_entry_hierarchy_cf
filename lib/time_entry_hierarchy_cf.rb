@@ -7,7 +7,7 @@ module TimeEntryHierarchyCf
 
   class << self
     def config_from_yaml
-      return @@yaml_config if @@yaml_config.present?
+      return self.yaml_config if self.yaml_config.present?
 
       if File.exists?(CONFIG_FILE_PATH)
         @@yaml_config = YAML::load(File.open(CONFIG_FILE_PATH).read)

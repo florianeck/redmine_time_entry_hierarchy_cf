@@ -19,4 +19,9 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
     end
   end
 
+  # this will be called recursively if required
+  def get_custom_value_from_object(object, object_field_name)
+
+  end
+
 end
