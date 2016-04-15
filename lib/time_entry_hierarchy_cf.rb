@@ -1,7 +1,7 @@
-module TimeEntryCustomFields
+module TimeEntryHierarchyCf
 
   ALLOWED_FIRST_LEVEL_KEYS = %w(project issue)
-  CONFIG_FILE_PATH         = "#{Rails.root}/config/time_entry_custom_fields.yml"
+  CONFIG_FILE_PATH         = "#{Rails.root}/config/time_entry_hierarchy_cf.yml"
 
   cattr_reader :yaml_config
 

@@ -1,4 +1,4 @@
-namespace :time_entry_custom_fields do
+namespace :time_entry_hierarchy_cf do
 
   desc "Create the custom fields configured in config/time_entry_custom_fields.yml"
   task :create_fields => :environment do

@@ -6,4 +6,4 @@ Redmine::Plugin.register :time_entry_custom_fields do
 end
 
 
-require "time_entry_custom_fields"
+require "time_entry_hierarchy_cf"
