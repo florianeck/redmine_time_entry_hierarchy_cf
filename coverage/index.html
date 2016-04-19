@@ -14,26 +14,26 @@
       <img src="./assets/0.9.0/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2016-04-19T15:20:42+02:00">2016-04-19T15:20:42+02:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2016-04-19T15:36:42+02:00">2016-04-19T15:36:42+02:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="yellow">83.75%</span></span>
+    (<span class="covered_percent"><span class="yellow">83.95%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         2.81
+         2.79
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>7</b> files in total.
-    <b>80</b> relevant lines. 
-    <span class="green"><b>67</b> lines covered</span> and
+    <b>81</b> relevant lines. 
+    <span class="green"><b>68</b> lines covered</span> and
     <span class="red"><b>13</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -72,10 +72,10 @@
       
       <tr>
         <td class="strong"><a href="#18b547affe1b96fadc2615e0b90c3ead6c234a9e" class="src_link" title="lib/time_entry_hierarchy_cf/project_issue_custom_fields.rb">lib/time_entry_hierarchy_cf/project_issue_custom_fields.rb</a></td>
-        <td class="red strong">73.91 %</td>
-        <td>45</td>
-        <td>23</td>
-        <td>17</td>
+        <td class="red strong">75.0 %</td>
+        <td>46</td>
+        <td>24</td>
+        <td>18</td>
         <td>6</td>
         <td>1.8</td>
       </tr>
@@ -625,10 +625,10 @@
         <div class="source_table" id="18b547affe1b96fadc2615e0b90c3ead6c234a9e">
   <div class="header">
     <h3>lib/time_entry_hierarchy_cf/project_issue_custom_fields.rb</h3>
-    <h4><span class="red">73.91 %</span> covered</h4>
+    <h4><span class="red">75.0 %</span> covered</h4>
     <div>
-      <b>23</b> relevant lines. 
-      <span class="green"><b>17</b> lines covered</span> and
+      <b>24</b> relevant lines. 
+      <span class="green"><b>18</b> lines covered</span> and
       <span class="red"><b>6</b> lines missed.</span>
     </div>
   </div>
@@ -696,211 +696,217 @@
           <code class="ruby">    field_value = assignable_custom_field_value_for(object, name)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="11">
+        <li class="covered" data-hits="3" data-linenumber="11">
+          <span class="hits">3</span>
           
-          
-          <code class="ruby"></code>
+          <code class="ruby">    binding.pry</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="12">
           
           
-          <code class="ruby">    # exit condition - avoid stack level to deep</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="13">
-          <span class="hits">3</span>
-          
-          <code class="ruby">    return if object == self.project &amp;&amp; field_value.blank?</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="14">
-          
-          
           <code class="ruby"></code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="15">
+        <li class="never" data-hits="" data-linenumber="13">
           
           
-          <code class="ruby">    if !field_value.blank?</code>
+          <code class="ruby">    # exit condition - avoid stack level to deep</code>
+        </li>
+      
+        <li class="covered" data-hits="3" data-linenumber="14">
+          <span class="hits">3</span>
+          
+          <code class="ruby">    return if object == self.project &amp;&amp; object.parent.nil?</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="15">
+          
+          
+          <code class="ruby"></code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="16">
           
           
-          <code class="ruby">      assign_time_entry_custom_field(name, field_value)</code>
+          <code class="ruby">    if !field_value.blank?</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="17">
           
           
-          <code class="ruby">    elsif object.parent.present?</code>
+          <code class="ruby">      assign_time_entry_custom_field(name, field_value)</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="18">
           
           
-          <code class="ruby">      get_custom_value_from_hierarchy(object.parent, name)</code>
+          <code class="ruby">    elsif object.parent.present?</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="19">
           
           
-          <code class="ruby">    elsif self.project.present?</code>
+          <code class="ruby">      get_custom_value_from_hierarchy(object.parent, name)</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="20">
           
           
-          <code class="ruby">      get_custom_value_from_hierarchy(self.project, name)</code>
+          <code class="ruby">    elsif self.project.present?</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="21">
+        <li class="missed" data-hits="0" data-linenumber="21">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">      get_custom_value_from_hierarchy(self.project, name)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="22">
           
           
-          <code class="ruby">  end</code>
+          <code class="ruby">    end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
           
           
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="24">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="24">
+        <li class="covered" data-hits="1" data-linenumber="25">
           <span class="hits">1</span>
           
           <code class="ruby">  def assignable_custom_field_value_for(object, name)</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="25">
+        <li class="covered" data-hits="3" data-linenumber="26">
           <span class="hits">3</span>
           
           <code class="ruby">    object.custom_field_values.select {|f| f.custom_field.internal_name ==  TimeEntryHierarchyCf::Naming.internal_name_for(object.class, name) }.first.try(:value)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="26">
+        <li class="never" data-hits="" data-linenumber="27">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="27">
+        <li class="never" data-hits="" data-linenumber="28">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="28">
+        <li class="covered" data-hits="1" data-linenumber="29">
           <span class="hits">1</span>
           
           <code class="ruby">  private</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="29">
+        <li class="never" data-hits="" data-linenumber="30">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="30">
+        <li class="covered" data-hits="1" data-linenumber="31">
           <span class="hits">1</span>
           
           <code class="ruby">  def assign_all_hierarchic_custom_fields</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="31">
+        <li class="never" data-hits="" data-linenumber="32">
           
           
           <code class="ruby">    #binding.pry</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="32">
+        <li class="covered" data-hits="3" data-linenumber="33">
           <span class="hits">3</span>
           
           <code class="ruby">    TimeEntryHierarchyCf.config_from_yaml.keys.each do |field_name|</code>
         </li>
       
-        <li class="covered" data-hits="9" data-linenumber="33">
+        <li class="covered" data-hits="9" data-linenumber="34">
           <span class="hits">9</span>
           
           <code class="ruby">      if self.issue.present?</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="34">
+        <li class="covered" data-hits="3" data-linenumber="35">
           <span class="hits">3</span>
           
           <code class="ruby">        self.get_custom_value_from_hierarchy(self.issue, field_name)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="35">
+        <li class="never" data-hits="" data-linenumber="36">
           
           
           <code class="ruby">      elsif self.project.present?</code>
         </li>
       
-        <li class="covered" data-hits="6" data-linenumber="36">
+        <li class="covered" data-hits="6" data-linenumber="37">
           <span class="hits">6</span>
           
           <code class="ruby">        self.get_custom_value_from_hierarchy(self.project, field_name)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="37">
+        <li class="never" data-hits="" data-linenumber="38">
           
           
           <code class="ruby">      end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="38">
+        <li class="never" data-hits="" data-linenumber="39">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="39">
+        <li class="never" data-hits="" data-linenumber="40">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="40">
+        <li class="never" data-hits="" data-linenumber="41">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="41">
+        <li class="covered" data-hits="1" data-linenumber="42">
           <span class="hits">1</span>
           
           <code class="ruby">  def assign_time_entry_custom_field(name, value)</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="42">
+        <li class="covered" data-hits="2" data-linenumber="43">
           <span class="hits">2</span>
           
           <code class="ruby">    self.custom_field_values.select {|f| f.custom_field.internal_name == TimeEntryHierarchyCf::Naming.internal_name_for(self.class, name)}.first.try(&quot;value=&quot;, value  )</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="43">
+        <li class="never" data-hits="" data-linenumber="44">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="44">
+        <li class="never" data-hits="" data-linenumber="45">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="45">
+        <li class="never" data-hits="" data-linenumber="46">
           
           
           <code class="ruby">end</code>

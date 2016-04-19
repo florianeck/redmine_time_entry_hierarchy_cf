@@ -10,7 +10,7 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
     field_value = assignable_custom_field_value_for(object, name)
 
     # exit condition - avoid stack level to deep
-    return if object == self.project && field_value.blank?
+    return if object == self.project && object.parent.nil?
 
     if !field_value.blank?
       assign_time_entry_custom_field(name, field_value)

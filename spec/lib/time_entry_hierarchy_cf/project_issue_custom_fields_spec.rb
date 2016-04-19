@@ -25,6 +25,7 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
   end
 
 
+
   describe '#assign_all_hierarchic_custom_fields' do
 
     let(:fake_issue) { build(:issue) }
@@ -52,6 +53,14 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
       end
 
       specify { time_entry.send(:assign_all_hierarchic_custom_fields) }
+    end
+
+  end
+
+  describe '#assignable_custom_field_value_for' do
+
+    before do
+      binding.pry
     end
 
   end
