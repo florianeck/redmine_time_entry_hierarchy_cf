@@ -7,7 +7,7 @@ RSpec.describe TimeEntryHierarchyCf do
 
   specify "module constants" do
     expect(described_class::CUSTOM_FIELD_MODELS).to eq([Project, Issue, TimeEntry])
-    expect(described_class::CONFIG_FILE_PATH).to eq("#{Rails.root}/config/time_entry_hierarchy_cf.yml")
+    expect(described_class::CONFIG_FILE_PATH).to eq("#{Rails.root}/plugins/time_entry_hierarchy_cf/config/time_entry_hierarchy_cf.yml")
   end
 
   specify "cattr_reader :yaml_config" do
