@@ -28,7 +28,6 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
   private
 
   def assign_all_hierarchic_custom_fields
-    #binding.pry
     TimeEntryHierarchyCf.config_from_yaml.keys.each do |field_name|
       if self.issue.present?
         self.get_custom_value_from_hierarchy(self.issue, field_name)
