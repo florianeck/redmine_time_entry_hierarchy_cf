@@ -16,12 +16,49 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
     expect(TimeEntry.included_modules).to include(described_class)
   end
 
+  describe 'is called before save' do
+    let(:time_entry) { build(:time_entry, project: root_project, activity_id: root_project.activities.first.id) }
+    before { expect(time_entry).to receive(:assign_all_hierarchic_custom_fields) }
+
+    specify { time_entry.save }
+  end
+
+
+  describe '#assign_all_hierarchic_custom_fields' do
+
+    let(:fake_issue) { build(:issue) }
+    let(:fake_project) { build(:project) }
+
+    context 'entry has an issue and a project' do
+      let(:time_entry) { build_stubbed(:time_entry, issue: fake_issue, project: fake_project) }
+
+      before do
+        dummy_yaml.keys.each do |name|
+          expect(time_entry).to receive(:get_custom_value_from_hierarchy).with(fake_issue, name)
+        end
+      end
+
+      specify { time_entry.send(:assign_all_hierarchic_custom_fields) }
+    end
+
+    context 'entry has only a project' do
+      let(:time_entry) { build_stubbed(:time_entry, project: fake_project) }
+
+      before do
+        dummy_yaml.keys.each do |name|
+          expect(time_entry).to receive(:get_custom_value_from_hierarchy).with(fake_project, name)
+        end
+      end
+
+      specify { time_entry.send(:assign_all_hierarchic_custom_fields) }
+    end
+
+  end
 
   describe "#assign_time_entry_custom_field" do
     let(:time_entry) { build(:time_entry, project: root_project, activity_id: root_project.activities.first.id) }
 
     before do
-      # skip activity_id validation
       time_entry.send(:assign_time_entry_custom_field, 'first_field', 'Hey!')
       time_entry.save
     end
@@ -31,9 +68,6 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
     end
   end
 
-  # def assign_time_entry_custom_field(name, value)
-#     self.custom_field_values.select {|f| f.custom_field.internal_name == TimeEntryHierarchyCf::Naming.internal_name_for(self.class, name)}.first.try("value=", value  )
-#   end
 
 
   after do
