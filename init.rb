@@ -7,3 +7,7 @@ end
 
 
 require "time_entry_hierarchy_cf"
+require "time_entry_hierarchy_cf/project_issue_custom_fields"
+
+require "time_entry"
+TimeEntry.send(:include, TimeEntryHierarchyCf::ProjectIssueCustomFields)

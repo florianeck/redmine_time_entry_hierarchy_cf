@@ -1,11 +1,11 @@
-project:
-  fields:
-    first_field:
-      field_format: string
-      is_required: true
+first_field:
+  field_format: string
+  is_required: true
 
-issue:
-  fields:
-    second_field:
-      field_format: string
-      hidden: true
+second_field:
+  field_format: string
+  is_required: true
+
+third_field:
+  field_format: string
+  hidden: true

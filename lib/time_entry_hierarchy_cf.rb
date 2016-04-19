@@ -1,6 +1,6 @@
 module TimeEntryHierarchyCf
 
-  ALLOWED_FIRST_LEVEL_KEYS = %w(project issue)
+  CUSTOM_FIELD_MODELS      = [Project, Issue, TimeEntry]
   CONFIG_FILE_PATH         = "#{Rails.root}/config/time_entry_hierarchy_cf.yml"
 
   cattr_reader :yaml_config
@@ -17,44 +17,41 @@ module TimeEntryHierarchyCf
     end
 
     def config_valid?
-      # checking for first level keys
-      if (config_from_yaml.keys - ALLOWED_FIRST_LEVEL_KEYS).any?
-        raise ArgumentError, "Invalid first-level keys in config: #{(config_from_yaml.keys - ALLOWED_FIRST_LEVEL_KEYS).inspect}"
+      config_from_yaml.each do |field_name, settings|
+        raise ArgumentError, "'#{field_name}' setttings must be a hash" if !settings.is_a?(Hash)
+        raise ArgumentError, "Missing :field_format for '#{field_name}'" if settings['field_format'].nil?
       end
 
       return true
     end
 
-    def create_custom_field!(type, field_name)
-      entry = custom_field_class_for(type, field_name).create(custom_field_attributes_for(type, field_name))
-
-      if entry.persisted?
-        TimeEntryCustomField.create(custom_field_attributes_for(type, field_name, for_time_entry: true))
+    def create_custom_field!(field_name)
+      entries = {}
+      CUSTOM_FIELD_MODELS.each do |model|
+        # Checking if entry already exists
+        next if custom_field_class_for(model).find_by_internal_name(Naming.internal_name_for(model, field_name)).present?
+        entries[model.name] = custom_field_class_for(model).create(custom_field_attributes_for(model, field_name))
       end
 
-      return entry
+      return entries
     end
 
-    def custom_field_attributes_for(type, field_name, options = {for_time_entry: false})
-      full_field_name = Naming.send((options[:for_time_entry] ? :time_entry_internal_name_for : :internal_name_for), type, field_name)
+    def custom_field_attributes_for(field_class, field_name)
+      full_field_name = Naming.internal_name_for(field_class, field_name)
 
-      config_from_yaml[type]['fields'][field_name].symbolize_keys.merge({
+      config_from_yaml[field_name].symbolize_keys.merge({
         name: "#{full_field_name.first(25)} #{ rand(1000)}", internal_name: full_field_name
       })
     end
 
-    def custom_field_class_for(type, field_name)
-      "#{type}_custom_field".camelize.constantize
+    def custom_field_class_for(field_class)
+      "#{field_class}CustomField".camelize.constantize
     end
   end
 
   module Naming
-    def self.internal_name_for(type, field_name)
-      "#{type}_#{field_name}"
-    end
-
-    def self.time_entry_internal_name_for(type, field_name)
-      "time_entry_#{field_name}_from_#{type}"
+    def self.internal_name_for(field_class, field_name)
+      "#{field_class.name.underscore}_#{field_name}"
     end
   end
 
