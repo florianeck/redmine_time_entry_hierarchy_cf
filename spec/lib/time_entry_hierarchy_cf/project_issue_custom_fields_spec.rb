@@ -18,17 +18,17 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
 
 
   describe "#assign_time_entry_custom_field" do
-    let(:time_entry) { build(:time_entry, project: root_project) }
+    let(:time_entry) { build(:time_entry, project: root_project, activity_id: root_project.activities.first.id) }
 
     before do
       # skip activity_id validation
       time_entry.send(:assign_time_entry_custom_field, 'first_field', 'Hey!')
+      time_entry.save
     end
 
     specify do
-      binding.pry
+      expect(time_entry.custom_values.first.value).to eq('Hey!')
     end
-
   end
 
   # def assign_time_entry_custom_field(name, value)
@@ -39,6 +39,7 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
   after do
     ProjectCustomField.delete_all
     TimeEntryCustomField.delete_all
+    CustomValue.delete_all
   end
 
 end

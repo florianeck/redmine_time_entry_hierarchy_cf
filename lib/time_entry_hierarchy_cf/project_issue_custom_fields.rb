@@ -9,6 +9,9 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
   def get_custom_value_from_hierarchy(object, name)
     field_value = assignable_custom_field_value_for(object, name)
 
+    # exit condition - avoid stack level to deep
+    return if object == self.project && !field_value.present?
+
     if field_value.present?
       assign_time_entry_custom_field(name, field_value)
     elsif object.parent.present?
