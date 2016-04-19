@@ -1,7 +1,7 @@
 module TimeEntryHierarchyCf
 
   CUSTOM_FIELD_MODELS      = [Project, Issue, TimeEntry]
-  CONFIG_FILE_PATH         = "#{Rails.root}/config/time_entry_hierarchy_cf.yml"
+  CONFIG_FILE_PATH         = File.expand_path("../../config/time_entry_hierarchy_cf.yml", __FILE__) #"#{Rails.root}/config/time_entry_hierarchy_cf.yml"
 
   cattr_reader :yaml_config
 

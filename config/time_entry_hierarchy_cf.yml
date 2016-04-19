@@ -1,0 +1,3 @@
+customer_invoice_reference:
+  field_format: string
+
