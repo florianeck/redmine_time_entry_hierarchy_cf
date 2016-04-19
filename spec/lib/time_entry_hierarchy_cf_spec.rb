@@ -6,7 +6,7 @@ RSpec.describe TimeEntryHierarchyCf do
   let!(:dummy_yaml)   { YAML::load(File.open(dummy_config_path).read) }
 
   specify "module constants" do
-    expect(described_class::CUSTOM_FIELD_MODELS).to eq([Project, Issue, TimeEntry])
+    expect(described_class.custom_field_models).to eq([Project, Issue, TimeEntry])
     expect(described_class::CONFIG_FILE_PATH).to eq("#{Rails.root}/plugins/time_entry_hierarchy_cf/config/time_entry_hierarchy_cf.yml")
   end
 
@@ -77,7 +77,7 @@ RSpec.describe TimeEntryHierarchyCf do
 
       before { custom_fields } # => Trigger creation of custom fields
 
-      described_class::CUSTOM_FIELD_MODELS.each do |model|
+      described_class.custom_field_models.each do |model|
         specify "#{model}CustomField" do
           expect(described_class.custom_field_class_for(model).find_by_internal_name(described_class::Naming.internal_name_for(model, 'first_field'))).not_to be(nil)
           expect(custom_fields[model.name]).to be_persisted
@@ -104,7 +104,7 @@ RSpec.describe TimeEntryHierarchyCf do
   describe ".custom_field_attributes_for" do
     before { allow(described_class).to receive(:yaml_config).and_return(dummy_yaml) }
 
-    described_class::CUSTOM_FIELD_MODELS.each do |model|
+    described_class.custom_field_models.each do |model|
       specify "for #{model} field" do
         expect(described_class.custom_field_attributes_for(model, 'first_field')[:field_format]).to eq('string')
         expect(described_class.custom_field_attributes_for(model, 'first_field')[:is_required]).to eq(true)

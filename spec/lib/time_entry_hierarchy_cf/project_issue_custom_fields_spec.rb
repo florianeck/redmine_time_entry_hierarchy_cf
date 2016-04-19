@@ -5,9 +5,11 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
   let!(:dummy_config_path) { File.expand_path("../../../fixtures/spec_config.yml", __FILE__) }
   let!(:dummy_yaml)   { YAML::load(File.open(dummy_config_path).read) }
 
+  let(:root_project)    { create(:project, name: "my root project") }
+
   before do
     allow(TimeEntryHierarchyCf).to receive(:yaml_config).and_return(dummy_yaml)
-    TimeEntryHierarchyCf.create_custom_field!('project', 'first_field')
+    TimeEntryHierarchyCf.create_custom_field!('first_field')
   end
 
   specify "module is included in TimeEntry class" do
@@ -15,45 +17,23 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
   end
 
 
-  describe "#custom_fields_data_fields_for" do
-    let(:time_entry) { build(:time_entry) }
+  describe "#assign_time_entry_custom_field" do
+    let(:time_entry) { build(:time_entry, project: root_project) }
 
-    specify "provides source field for project" do
-      expect(time_entry.custom_fields_data_fields_for('project', 'first_field')[:source]).to be_a(ProjectCustomField)
+    before do
+      # skip activity_id validation
+      time_entry.send(:assign_time_entry_custom_field, 'first_field', 'Hey!')
     end
 
-    specify "provides dest field for timeentry" do
-      expect(time_entry.custom_fields_data_fields_for('project', 'first_field')[:dest]).to be_a(TimeEntryCustomField)
+    specify do
+      binding.pry
     end
-  end
-
-  describe "#get_custom_value_from_object" do
-
-    let!(:fields_data) { time_entry.custom_fields_data_fields_for('project', 'first_field') }
-
-    let(:project) { create(:project, custom_field_values: {
-      fields_data[:source].id => "hello"
-      })
-    }
-    let(:time_entry) { build(:time_entry) }
-
-
-    context "project has custom value for 'first_field'" do
-
-      before do
-        binding.pry
-        project.custom_value_for(fields_data[:source]).value = "Hello"
-        time_entry.get_custom_value_from_object('project', 'first_field')
-      end
-
-      specify { expect(time_entry.custom_value_for(fields_data[:dest])).to eq('Hello') }
-
-    end
-
 
   end
 
-
+  # def assign_time_entry_custom_field(name, value)
+#     self.custom_field_values.select {|f| f.custom_field.internal_name == TimeEntryHierarchyCf::Naming.internal_name_for(self.class, name)}.first.try("value=", value  )
+#   end
 
 
   after do

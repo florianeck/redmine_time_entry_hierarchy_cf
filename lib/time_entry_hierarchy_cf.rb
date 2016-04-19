@@ -1,11 +1,15 @@
 module TimeEntryHierarchyCf
 
-  CUSTOM_FIELD_MODELS      = [Project, Issue, TimeEntry]
-  CONFIG_FILE_PATH         = File.expand_path("../../config/time_entry_hierarchy_cf.yml", __FILE__) #"#{Rails.root}/config/time_entry_hierarchy_cf.yml"
+  CONFIG_FILE_PATH         = File.expand_path("../../config/time_entry_hierarchy_cf.yml", __FILE__)
 
   cattr_reader :yaml_config
 
   class << self
+
+    def custom_field_models
+      [Project, Issue, TimeEntry]
+    end
+
     def config_from_yaml
       return self.yaml_config if self.yaml_config.present?
 
@@ -27,7 +31,7 @@ module TimeEntryHierarchyCf
 
     def create_custom_field!(field_name)
       entries = {}
-      CUSTOM_FIELD_MODELS.each do |model|
+      self.custom_field_models.each do |model|
         # Checking if entry already exists
         next if custom_field_class_for(model).find_by_internal_name(Naming.internal_name_for(model, field_name)).present?
         entries[model.name] = custom_field_class_for(model).create(custom_field_attributes_for(model, field_name))

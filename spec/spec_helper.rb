@@ -5,6 +5,10 @@ SimpleCov.start
 # Loading rails environment
 require File.expand_path("../../../../config/environment", __FILE__)
 
+# Force using test db connection for test env
+db_config = YAML.load(File.open("#{Rails.root}/config/database.yml").read)['test']
+ActiveRecord::Base.establish_connection(db_config)
+
 # Loading relevant Files from lib/
 require File.expand_path("../../lib/time_entry_hierarchy_cf.rb", __FILE__)
 
