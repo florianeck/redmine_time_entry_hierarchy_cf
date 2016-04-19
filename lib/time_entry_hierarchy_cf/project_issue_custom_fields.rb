@@ -5,36 +5,38 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
     before_save :assign_all_hierarchic_custom_fields
   end
 
+  # this will be called recursively if required
+  def get_custom_value_from_hierarchy(object, name)
+    field_value = assignable_custom_field_value_for(object, name)
 
-  def custom_fields_data_fields_for(type, name)
-    {
-      source: TimeEntryHierarchyCf.custom_field_class_for(type).find_by_internal_name(TimeEntryHierarchyCf::Naming.internal_name_for(type, name)),
-      dest: TimeEntryCustomField.find_by_internal_name(TimeEntryHierarchyCf::Naming.time_entry_internal_name_for(type, name))
-    }
+    if field_value.present?
+      assign_time_entry_custom_field(name, field_value)
+    elsif object.parent.present?
+      get_custom_value_from_hierarchy(object.parent, name)
+    elsif self.project.present?
+      get_custom_value_from_hierarchy(self.project, name)
+    end
   end
 
-  # this will be called recursively if required
-  def get_custom_value_from_object(object, name)
-    data_fields = self.custom_fields_data_fields_for(object.class.to_s.downcase, name)
-
-    if object.custom_value_for(data_fields[:source]).present?
-      self.custom_value_for(data_fields[:dest]).value = object.custom_value_for(data_fields[:source])
-    elsif object.parent && object.parent.custom_value_for(data_fields[:source]).present?
-      get_custom_value_from_object(object.parent, name)
-    end
+  def assignable_custom_field_value_for(object, name)
+    object.custom_field_values.select {|f| f.custom_field.internal_name ==  TimeEntryHierarchyCf::Naming.internal_name_for(object.class, name) }.first.try(:value)
   end
 
   private
 
   def assign_all_hierarchic_custom_fields
-
-    TimeEntryHierarchyCf.config_from_yaml.each do |type, data|
-      data['fields'].keys.each do |name|
-        puts "#{type} #{name}"
-        self.get_custom_value_from_object(self.send(type), name)
+    #binding.pry
+    TimeEntryHierarchyCf.config_from_yaml.keys.each do |field_name|
+      if self.issue.present?
+        self.get_custom_value_from_hierarchy(self.issue, field_name)
+      elsif self.project.present?
+        self.get_custom_value_from_hierarchy(self.project, field_name)
       end
     end
+  end
 
+  def assign_time_entry_custom_field(name, value)
+    self.custom_field_values.select {|f| f.custom_field.internal_name == TimeEntryHierarchyCf::Naming.internal_name_for(self.class, name)}.first.try("value=", value  )
   end
 
 end

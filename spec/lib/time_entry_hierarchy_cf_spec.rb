@@ -45,7 +45,6 @@ RSpec.describe TimeEntryHierarchyCf do
         end
       end
     end
-
   end
 
   describe ".config_valid?" do
@@ -93,7 +92,6 @@ RSpec.describe TimeEntryHierarchyCf do
       specify do
         expect { described_class.create_custom_field!('first_field') }.not_to raise_error
       end
-
     end
 
     after do
