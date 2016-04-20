@@ -1,6 +1,6 @@
-= Redmine Plugin: TimeEntryHierarchyFields
+# Redmine Plugin: TimeEntryHierarchyFields
 
-== What it does
+## What it does
 
 This plugin automatically copies defined custom fields from issues and projects to created time entries for those entities.
 It checks hierarchically (bottom) if a given value exists by the following rules
@@ -15,7 +15,7 @@ It checks hierarchically (bottom) if a given value exists by the following rules
 
 and takes the first value it finds while working up in the tree.
 
-== Config
+## Config
 
 List all fields that should be covered by hierarchy custom fields
 Each entry creates three fields:
@@ -26,7 +26,10 @@ Each entry creates three fields:
 All options given are directly passed to the created time entry.
 !! 'internal_name' field is automatically created and MUST NOT be changed/overwritten
 
+Example entry from the YAML file
+
+```
 customer_invoice_reference:
   field_format: string
   searchable: true
-
+```
