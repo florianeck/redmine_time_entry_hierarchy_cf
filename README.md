@@ -24,7 +24,8 @@ Each entry creates three fields:
   - 'time_entr_customer_invoice_reference' as TimeEntryCustomField
 
 All options given are directly passed to the created time entry.
-!! 'internal_name' field is automatically created and MUST NOT be changed/overwritten
+
+** INFO: 'internal_name' field is automatically created and MUST NOT be changed/overwritten **
 
 Example entry from the YAML file
 
