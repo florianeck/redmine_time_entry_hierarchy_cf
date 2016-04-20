@@ -1,18 +1,12 @@
-# Setup which custom fields from Issue/Project should be hierarchically available for the TimeEntry record
+# List all fields that should be covered by hierarchy custom fields
+# Each entry creates three fields:
+#   'issue_customer_invoice_reference'      as IssueCustomField
+#   'project_customer_invoice_reference'    as PrjoectCustomField
+#   'time_entr_customer_invoice_reference'  as TimeEntryCustomField
+#
+# All options given are directly passed to the created time entry.
+# !! 'internal_name' field is automatically created and MUST NOT be changed/overwritten
 
-# The CustomFields #internal_name will be prefixed with model_name
-# E.g. {project => {fields => [invoice_reference] }} will return 'project_invoice_reference'
-
-# All attributes under the name key will be passed directly to the CustomField instance when created or updated
-#project:
-#  fields:
-#    customer_invoice_reference:
-#      # this will create the ProjectCustomField `project_customer_invoice_reference`
-#      # these attributes are directly passed to the created CustomFieldEntry
-#      field_format: string
-#      is_requiered: true
-#      regexp: /[A-Za-z0-9]{1,}/
-#issue:
-#  fields:
-#    customer:
-#      field_format: int
+# customer_invoice_reference:
+#   field_format: string
+#   searchable: true
