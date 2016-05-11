@@ -1,7 +1,7 @@
 Redmine::Plugin.register :time_entry_hierarchy_cf do
   name 'TimeEntry Custom Fields'
   author 'Florian Eck for akquinet'
-  description 'Automatically assign custom field valies from Iss'
+  description 'Automatically assign custom field values from Issues&Projects to TimeEntry'
   version '0.9'
 end
 
