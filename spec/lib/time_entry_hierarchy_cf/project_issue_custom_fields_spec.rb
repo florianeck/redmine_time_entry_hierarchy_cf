@@ -116,6 +116,14 @@ RSpec.describe TimeEntryHierarchyCf::ProjectIssueCustomFields do
       specify { time_entry.send(:assign_all_hierarchic_custom_fields) }
     end
 
+    context 'value is set for time entry direclty' do
+      let(:time_entry) { build(:time_entry, issue: fake_issue, project: fake_project, custom_field_values: {time_entry_field.id => 'Primary'}) }
+
+      before do
+        expect(time_entry).to receive(:assign_time_entry_custom_field).with('one_field', 'Primary')
+      end
+      specify { time_entry.send(:assign_all_hierarchic_custom_fields) }
+    end
   end
 
   describe '#assignable_custom_field_value_for' do
