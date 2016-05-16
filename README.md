@@ -34,3 +34,11 @@ customer_invoice_reference:
   field_format: string
   searchable: true
 ```
+
+
+## Info
+
+This Plugin was created by Florian Eck for akquinet GmbH.
+It is licensed under GNU GENERAL PUBLIC LICENSE.
+
+It has been tested with EasyRedmine, but should also work for regular Redmine installations. If you find any bugs, please file an issue or create a PR.
