@@ -1,4 +1,4 @@
-Redmine::Plugin.register :time_entry_hierarchy_cf do
+Redmine::Plugin.register :redmine_time_entry_hierarchy_cf do
   name 'TimeEntry Custom Fields'
   author 'Florian Eck for akquinet'
   description 'Automatically assign custom field values from Issues&Projects to TimeEntry'
