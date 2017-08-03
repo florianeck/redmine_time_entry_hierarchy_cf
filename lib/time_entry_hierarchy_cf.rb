@@ -43,13 +43,19 @@ module TimeEntryHierarchyCf
     def custom_field_attributes_for(field_class, field_name)
       full_field_name = Naming.internal_name_for(field_class, field_name)
 
-      config_from_yaml[field_name].symbolize_keys.merge({
+      config_from_yaml[field_name].symbolize_keys.except(:internal_name, :fallbacks).merge({
         name: "#{full_field_name.first(25)} #{ rand(1000)}", internal_name: full_field_name
       })
     end
 
     def custom_field_class_for(field_class)
       "#{field_class}CustomField".camelize.constantize
+    end
+    
+    def get_fallback_value_for(obj, field_name)
+      if fallback_chain = config_from_yaml[field_name].dig('fallbacks', obj.class.name.underscore)
+        send_chain(obj, fallback_chain)
+      end
     end
   end
 
@@ -58,5 +64,14 @@ module TimeEntryHierarchyCf
       "#{field_class.name.underscore}_#{field_name}"
     end
   end
-
+  
+  def self.send_chain(obj, chain)
+    value = obj
+    chain.split('.').each do |a|
+      value = value.try(a)  
+    end
+    
+    return value
+  end
+  
 end

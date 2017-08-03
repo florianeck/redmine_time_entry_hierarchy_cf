@@ -4,7 +4,7 @@
 #   'project_customer_invoice_reference'    as PrjoectCustomField
 #   'time_entr_customer_invoice_reference'  as TimeEntryCustomField
 #
-# All options given are directly passed to the created time entry.
+# All options (expect :fallbacks) given are directly passed to the created time entry.
 # !! 'internal_name' field is automatically created and MUST NOT be changed/overwritten
 
 # customer_invoice_reference:
