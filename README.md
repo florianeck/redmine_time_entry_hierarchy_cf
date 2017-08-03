@@ -21,7 +21,7 @@ List all fields that should be covered by hierarchy custom fields
 Each entry creates three fields:
   - 'issue_customer_invoice_reference' as IssueCustomField
   - 'project_customer_invoice_reference' as PrjoectCustomField
-  - 'time_entr_customer_invoice_reference' as TimeEntryCustomField
+  - 'time_entry_customer_invoice_reference' as TimeEntryCustomField
 
 All options given are directly passed to the created time entry.
 
@@ -33,8 +33,15 @@ Example entry from the YAML file
 customer_invoice_reference:
   field_format: string
   searchable: true
+  fallbacks:
+    issue: 'user.name'
+    project: 'issues.first.assigned_to.name'
 ```
 
+## Fallbacks
+
+If the given field is not found on th current instance, it is possible to check for other values on the instance instead. This can be done by adding the method (or method chain) 
+to be called additionally.
 
 ## Info
 

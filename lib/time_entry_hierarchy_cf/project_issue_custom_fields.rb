@@ -8,7 +8,12 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
   # this will be called recursively if required
   def get_custom_value_from_hierarchy(object, name)
     field_value = assignable_custom_field_value_for(object, name)
-
+    
+    # running fallback method
+    if field_value.blank?
+      field_value = TimeEntryHierarchyCf.get_fallback_value_for(object, name)
+    end
+    
     # exit condition - avoid stack level to deep
     if object == self.project && object.parent.nil?
       assign_time_entry_custom_field(name, field_value) unless field_value.blank?
