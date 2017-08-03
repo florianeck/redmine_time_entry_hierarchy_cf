@@ -7,9 +7,7 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
 
   # this will be called recursively if required
   def get_custom_value_from_hierarchy(object, field_name)
-    # checking wether the given object (Project or Issue ) has a custom value for 'field_name' present -
-    # else: running fallback method to see if value can be loaded from the instance itself by using `.try` method
-    field_value = assignable_custom_field_value_for(object, field_name).presence || TimeEntryHierarchyCf.get_fallback_value_for(object, field_name)
+    field_value = assignable_custom_field_value_for(object, field_name)
     
     # exit condition - avoid stack level to deep
     if object == self.project && object.parent.nil?
@@ -28,9 +26,12 @@ module TimeEntryHierarchyCf::ProjectIssueCustomFields
       get_custom_value_from_hierarchy(self.project, field_name)
     end
   end
-
+  
+  # checking wether the given object (Project / Issue / TimeEntry ) has a custom value for 'field_name' present -
+  # else: running fallback method to see if value can be loaded from the instance itself by using `.try` method
   def assignable_custom_field_value_for(object, field_name)
-    object.custom_field_values.select {|f| f.custom_field.internal_name ==  TimeEntryHierarchyCf::Naming.internal_name_for(object.class, field_name) }.first.try(:value)
+    cf_value = object.custom_field_values.select {|f| f.custom_field.internal_name ==  TimeEntryHierarchyCf::Naming.internal_name_for(object.class, field_name) }.first.try(:value)
+    cf_value.presence || TimeEntryHierarchyCf.get_fallback_value_for(object, field_name)
   end
 
   private

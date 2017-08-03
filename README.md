@@ -36,6 +36,7 @@ customer_invoice_reference:
   fallbacks:
     issue: 'user.name'
     project: 'issues.first.assigned_to.name'
+    time_entry: 'user.name'
 ```
 
 ## Fallbacks
