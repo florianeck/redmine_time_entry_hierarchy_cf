@@ -53,7 +53,7 @@ module TimeEntryHierarchyCf
     end
     
     def get_fallback_value_for(obj, field_name)
-      if config_from_yaml[field_name] && config_from_yaml[field_name]['fallbacks'].try(:[], obj.class.name.underscore) 
+      if config_from_yaml[field_name]
         send_chain(obj, config_from_yaml[field_name]['fallbacks'].try(:[], obj.class.name.underscore))
       end
     end
@@ -66,6 +66,7 @@ module TimeEntryHierarchyCf
   end
   
   def self.send_chain(obj, chain)
+    return if chain.blank?
     value = obj
     chain.split('.').each do |a|
       value = value.try(a)  
