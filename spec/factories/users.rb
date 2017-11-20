@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :user do
     sequence(:login) {|n| "random.user.#{n}.#{Time.now.to_i}" }

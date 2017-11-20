@@ -1,3 +1,3 @@
 gem "pry"
-gem 'factory_girl_rails'
+gem 'factory_bot_rails'
 
